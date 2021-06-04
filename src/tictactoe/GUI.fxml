@@ -4,14 +4,20 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tictactoe.GUIController">
    <children>
-      <Label fx:id="currentPlayerLabel" text="Current Player: " textFill="WHITE" />
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" text="X score: " textFill="WHITE" fx:id="xScoreLabel" />
+            <Label fx:id="currentPlayerLabel" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" text="Current Player: " textFill="WHITE" />
+            <Label fx:id="oScoreLabel" alignment="CENTER_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" text="O score: " textFill="WHITE" />
+         </children>
+      </HBox>
       <GridPane fx:id="board" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

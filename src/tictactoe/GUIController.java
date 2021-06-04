@@ -18,53 +18,75 @@ import javafx.stage.Stage;
 
 public class GUIController implements Initializable {
 
-    private boolean playerOneTurn;
-    private int playerOneScore = 0, playerTwoScore = 0;
+    private boolean playerXTurn;
+    private int playerXScore = 0, playerOScore = 0;
 
     @FXML
     private GridPane board;
 
     @FXML
-    private Label currentPlayerLabel;
+    private Label currentPlayerLabel, xScoreLabel, oScoreLabel;
 
     @FXML
     private void squareClicked(ActionEvent e) {
-        if (playerOneTurn && ((Button) e.getSource()).getText().equals("")) {
+        if (playerXTurn && ((Button) e.getSource()).getText().equals("")) {
             ((Button) e.getSource()).setText("X");
             if (checkForWin("X")) {
-                showWin("X");
+                playerXScore++;
+                xScoreLabel.setText("X score: " + String.valueOf(playerXScore));
+                showWin("X", e);
             }
-            playerOneTurn = !playerOneTurn;
+            playerXTurn = !playerXTurn;
             setPlayerLabel();
-        } else if (!playerOneTurn && ((Button) e.getSource()).getText().equals("")) {
+        } else if (!playerXTurn && ((Button) e.getSource()).getText().equals("")) {
             ((Button) e.getSource()).setText("O");
             if (checkForWin("O")) {
-                showWin("O");
+                playerOScore++;
+                oScoreLabel.setText("X score: " + String.valueOf(playerOScore));
+                showWin("O", e);
             }
-            playerOneTurn = !playerOneTurn;
+            playerXTurn = !playerXTurn;
             setPlayerLabel();
         }
     }
-    
-    private void showWin(String playerLetter){
+
+    private void showWin(String playerLetter, ActionEvent e) {
+
         Stage window = new Stage();
-        
+
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("GAME OVER");
         window.setMinWidth(250);
-        
+
         Label messageLabel = new Label(playerLetter + " wins!");
-        Button closeButton = new Button("OK");
-        closeButton.setOnAction(e-> window.close());
-        
+        Button playAgainButton = new Button("Play again");
+        Button exitButton = new Button("Exit");
+
+        playAgainButton.setOnAction(ev -> {
+            restartGame();
+            window.close();
+        });
+        exitButton.setOnAction(ev -> {
+            window.close();
+            ((Stage) ((Button) e.getSource()).getScene().getWindow()).close();
+        });
+
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(messageLabel, closeButton);
+        layout.getChildren().addAll(messageLabel, playAgainButton, exitButton);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
-        
+
         Scene scene = new Scene(layout);
         window.setScene(scene);
         window.showAndWait();
+    }
+
+    private void restartGame() {
+        for (Node n : board.getChildren()) {
+            if (n instanceof Button) {
+                ((Button) n).setText("");
+            }
+        }
     }
 
     private boolean checkForWin(String playerLetter) {
@@ -74,19 +96,20 @@ public class GUIController implements Initializable {
                 boardArray[pos] = ((Button) board.getChildren().get(pos)).getText();
             }
         }
-        return ((boardArray[6].equals(playerLetter) && boardArray[7].equals(playerLetter) && boardArray[8].equals(playerLetter)) || // across the top
-                (boardArray[3].equals(playerLetter) && boardArray[4].equals(playerLetter) && boardArray[5].equals(playerLetter)) || // across the middle
-                (boardArray[0].equals(playerLetter) && boardArray[1].equals(playerLetter) && boardArray[2].equals(playerLetter)) || // across the bottom
-                (boardArray[6].equals(playerLetter) && boardArray[3].equals(playerLetter) && boardArray[0].equals(playerLetter)) || // down the left side
-                (boardArray[7].equals(playerLetter) && boardArray[4].equals(playerLetter) && boardArray[1].equals(playerLetter)) || // down the middle
-                (boardArray[8].equals(playerLetter) && boardArray[5].equals(playerLetter) && boardArray[2].equals(playerLetter)) || // down the right side
-                (boardArray[6].equals(playerLetter) && boardArray[4].equals(playerLetter) && boardArray[2].equals(playerLetter)) || // diagonal
-                (boardArray[8].equals(playerLetter) && boardArray[4].equals(playerLetter) && boardArray[0].equals(playerLetter))); // diagonal
+        return ((boardArray[6].equals(playerLetter) && boardArray[7].equals(playerLetter) && boardArray[8].equals(playerLetter)) // top
+                || (boardArray[3].equals(playerLetter) && boardArray[4].equals(playerLetter) && boardArray[5].equals(playerLetter)) // middle
+                || (boardArray[0].equals(playerLetter) && boardArray[1].equals(playerLetter) && boardArray[2].equals(playerLetter)) // bottom
+                || (boardArray[6].equals(playerLetter) && boardArray[3].equals(playerLetter) && boardArray[0].equals(playerLetter)) // left side
+                || (boardArray[7].equals(playerLetter) && boardArray[4].equals(playerLetter) && boardArray[1].equals(playerLetter)) // center
+                || (boardArray[8].equals(playerLetter) && boardArray[5].equals(playerLetter) && boardArray[2].equals(playerLetter)) // right side
+                || (boardArray[6].equals(playerLetter) && boardArray[4].equals(playerLetter) && boardArray[2].equals(playerLetter)) // diagonal
+                || (boardArray[8].equals(playerLetter) && boardArray[4].equals(playerLetter) && boardArray[0].equals(playerLetter)) // diagonal
+                );
 
     }
 
     private void setPlayerLabel() {
-        if (playerOneTurn) {
+        if (playerXTurn) {
             currentPlayerLabel.setText("Current Player: Player One");
         } else {
             currentPlayerLabel.setText("Current Player: Player Two");
@@ -95,7 +118,7 @@ public class GUIController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        playerOneTurn = true;
+        playerXTurn = true;
         setPlayerLabel();
     }
 
