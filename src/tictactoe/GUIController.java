@@ -34,7 +34,7 @@ public class GUIController implements Initializable {
             if (checkForWin("X")) {
                 playerXScore++;
                 xScoreLabel.setText("X score: " + String.valueOf(playerXScore));
-                showWin("X", e);
+                showMessage("X wins!", e);
             }
             playerXTurn = !playerXTurn;
             setPlayerLabel();
@@ -43,24 +43,33 @@ public class GUIController implements Initializable {
             if (checkForWin("O")) {
                 playerOScore++;
                 oScoreLabel.setText("X score: " + String.valueOf(playerOScore));
-                showWin("O", e);
+                showMessage("O wins!", e);
             }
             playerXTurn = !playerXTurn;
             setPlayerLabel();
         }
+        if (!checkForWin("X") && !checkForWin("O")) {
+            if (checkForDraw()) {
+                showMessage("It's a draw!", e);
+            }
+        }
     }
 
-    private void showWin(String playerLetter, ActionEvent e) {
-
+    private void showMessage(String message, ActionEvent e) {
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("GAME OVER");
         window.setMinWidth(250);
 
-        Label messageLabel = new Label(playerLetter + " wins!");
+        Label messageLabel = new Label(message);
+        messageLabel.setStyle("-fx-text-fill:white;");
+
         Button playAgainButton = new Button("Play again");
+        playAgainButton.setStyle("-fx-background-color:black;-fx-text-fill:white;-fx-border-color:white;");
+
         Button exitButton = new Button("Exit");
+        exitButton.setStyle("-fx-background-color:black;-fx-text-fill:white;-fx-border-color:white;");
 
         playAgainButton.setOnAction(ev -> {
             restartGame();
@@ -75,6 +84,7 @@ public class GUIController implements Initializable {
         layout.getChildren().addAll(messageLabel, playAgainButton, exitButton);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
+        layout.setStyle("-fx-background-color:black;");
 
         Scene scene = new Scene(layout);
         window.setScene(scene);
@@ -108,11 +118,23 @@ public class GUIController implements Initializable {
 
     }
 
+    private boolean checkForDraw() {
+        boolean draw = true;
+        for (Node node : board.getChildren()) {
+            if (node instanceof Button) {
+                if (((Button) node).getText().equals("")) {
+                    draw = false;
+                }
+            }
+        }
+        return draw;
+    }
+
     private void setPlayerLabel() {
         if (playerXTurn) {
-            currentPlayerLabel.setText("Current Player: Player One");
+            currentPlayerLabel.setText("Current Player: X");
         } else {
-            currentPlayerLabel.setText("Current Player: Player Two");
+            currentPlayerLabel.setText("Current Player: O");
         }
     }
 
@@ -120,6 +142,8 @@ public class GUIController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         playerXTurn = true;
         setPlayerLabel();
+        xScoreLabel.setText("X score: 0");
+        oScoreLabel.setText("X score: 0");
     }
 
 }

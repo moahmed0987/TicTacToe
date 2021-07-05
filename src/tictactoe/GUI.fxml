@@ -13,9 +13,18 @@
    <children>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" text="X score: " textFill="WHITE" fx:id="xScoreLabel" />
-            <Label fx:id="currentPlayerLabel" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" text="Current Player: " textFill="WHITE" />
-            <Label fx:id="oScoreLabel" alignment="CENTER_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" text="O score: " textFill="WHITE" />
+            <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" text="X score: " textFill="WHITE" fx:id="xScoreLabel">
+               <font>
+                  <Font size="21.0" />
+               </font></Label>
+            <Label fx:id="currentPlayerLabel" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="400.0" text="Current Player: " textFill="WHITE">
+               <font>
+                  <Font size="22.0" />
+               </font></Label>
+            <Label fx:id="oScoreLabel" alignment="CENTER_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" text="O score: " textFill="WHITE">
+               <font>
+                  <Font size="21.0" />
+               </font></Label>
          </children>
       </HBox>
       <GridPane fx:id="board" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0">
